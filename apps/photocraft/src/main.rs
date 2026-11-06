@@ -69,6 +69,8 @@ mod services;
 #[cfg(any(not(target_os = "macos"), test))]
 mod single_instance;
 mod startup_report;
+#[cfg(target_os = "linux")]
+mod steamvr_input;
 // Tablet support (macOS AppKit monitor, Linux X11/Wayland, Windows barrel button).
 mod tablet;
 mod ui_state;
@@ -343,6 +345,10 @@ fn main() -> eframe::Result {
     // Before anything starts a thread: may re-execute this process with glibc tuned to return
     // the memory of closed documents (#8743).
     photocraft_engine::malloc_tuning::apply();
+    // SteamVR's Xwayland laser mouse loses pointer clicks after a text field takes focus on Frame;
+    // retain the Steam process but use gamescope's native Wayland socket instead.
+    #[cfg(target_os = "linux")]
+    steamvr_input::prefer_native_wayland();
     // Then, so the panic hook and every start-up warning are recorded (`logging`).
     let logger = logging::install();
     crash_guard::install_hook();
