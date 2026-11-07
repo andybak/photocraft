@@ -1,0 +1,24 @@
+name: SteamOS artifacts
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/steamos.yml
+      - packaging/steamos/**
+      - packaging/linux/**
+      - apps/photocraft/src/steamvr_input.rs
+      - apps/photocraft/Cargo.toml
+      - Cargo.toml
+      - Cargo.lock
+      - rust-toolchain
+      - rust-toolchain.toml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  steamos:
+    uses: storytold/craft-common-actions/.github/workflows/steamos.yml@main
+    with:
+      artifact-name-prefix: photocraft
