@@ -1,0 +1,17 @@
+name: SteamOS artifacts (fork)
+
+# Fork-only caller for producing test artifacts before the shared workflow lands upstream.
+# This file is never part of the upstream PhotoCraft CI PR.
+on:
+  push:
+    branches: [fork/steamos-builds]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  steamos:
+    uses: andybak/craft-common-actions/.github/workflows/steamos.yml@feat/steamos-artifacts
+    with:
+      artifact-name-prefix: photocraft
